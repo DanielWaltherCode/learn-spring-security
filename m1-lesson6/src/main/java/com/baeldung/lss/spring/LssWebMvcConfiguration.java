@@ -1,12 +1,16 @@
 package com.baeldung.lss.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.baeldung.lss.persistence.UserRepository;
@@ -14,7 +18,7 @@ import com.baeldung.lss.web.model.User;
 
 @EnableWebMvc
 @Configuration
-public class LssWebMvcConfiguration extends WebMvcConfigurerAdapter {
+public class LssWebMvcConfiguration implements WebMvcConfigurer {
     
     @Autowired
     private UserRepository userRepository;
@@ -35,6 +39,11 @@ public class LssWebMvcConfiguration extends WebMvcConfigurerAdapter {
             }
         });
        
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }
